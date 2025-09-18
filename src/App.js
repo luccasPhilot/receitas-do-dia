@@ -36,6 +36,7 @@ function App() {
       } else {
         throw new Error("Nenhuma receita encontrada.");
       }
+      console.log(data);
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error.message });
     }

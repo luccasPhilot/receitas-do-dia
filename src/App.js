@@ -32,14 +32,14 @@ function App() {
       const response = await fetch(
         "https://www.themealdb.com/api/json/v1/1/random.php"
       );
-      if (!response.ok) throw new Error("Falha na resposta da rede.");
+      if (!response.ok) throw new Error("Network response failed.");
       const data = await response.json();
       if (data.meals) {
         const recipe = data.meals[0];
         dispatch({ type: "FETCH_SUCCESS", payload: recipe });
         addRecipeToHistory(recipe);
       } else {
-        throw new Error("Nenhuma receita encontrada.");
+        throw new Error("No recipe found.");
       }
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error.message });
@@ -52,9 +52,7 @@ function App() {
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
-      setValidationError(
-        "Por favor, digite o nome de uma receita para buscar."
-      );
+      setValidationError("Please enter a recipe name to search.");
       return;
     }
     setValidationError("");
@@ -63,14 +61,14 @@ function App() {
       const response = await fetch(
         `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`
       );
-      if (!response.ok) throw new Error("Falha na resposta da rede.");
+      if (!response.ok) throw new Error("Network response failed.");
       const data = await response.json();
       if (data.meals) {
         const recipe = data.meals[0];
         dispatch({ type: "FETCH_SUCCESS", payload: recipe });
         addRecipeToHistory(recipe);
       } else {
-        throw new Error(`Nenhuma receita encontrada para "${searchTerm}".`);
+        throw new Error(`No recipe found for "${searchTerm}".`);
       }
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error.message });
@@ -88,10 +86,10 @@ function App() {
   return (
     <Container maxWidth="md" sx={{ textAlign: "center", py: 4 }}>
       <Typography variant="h2" gutterBottom>
-        🍴 Receita do Dia
+        🍴 Recipe of the Day
       </Typography>
       <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
-        Descubra uma receita aleatória ou busque por seu prato favorito!
+        Discover a random recipe or search for your favorite dish!
       </Typography>
 
       <Stack
@@ -102,7 +100,7 @@ function App() {
         sx={{ mb: 3 }}
       >
         <TextField
-          label="Buscar por nome..."
+          label="Search by name..."
           variant="outlined"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -118,7 +116,7 @@ function App() {
           disabled={state.loading}
           sx={{ height: "56px" }}
         >
-          Buscar
+          Search
         </Button>
       </Stack>
 
@@ -128,7 +126,7 @@ function App() {
         onClick={fetchRandomRecipe}
         disabled={state.loading}
       >
-        {state.loading ? "Buscando..." : "Me Surpreenda com uma Aleatória!"}
+        {state.loading ? "Searching..." : "Surprise Me with a Random!"}
       </Button>
 
       <Box sx={{ my: 4 }}>
@@ -142,7 +140,7 @@ function App() {
       {history.length > 0 && (
         <Box sx={{ mt: 5, textAlign: "left" }}>
           <Typography variant="h5" gutterBottom>
-            Histórico de Receitas Vistas
+            Viewed Recipes History
           </Typography>
           <List>
             {history.map((recipe) => (
@@ -151,7 +149,7 @@ function App() {
                 secondaryAction={
                   <IconButton
                     edge="end"
-                    aria-label="rever"
+                    aria-label="re-view"
                     onClick={() => showRecipeFromHistory(recipe)}
                   >
                     <ReplayIcon />

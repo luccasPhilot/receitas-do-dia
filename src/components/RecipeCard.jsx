@@ -49,7 +49,7 @@ function RecipeCard({ recipe }) {
 
         <Box>
           <Typography variant="h6" gutterBottom>
-            Ingredientes
+            Ingredients
           </Typography>
           <List dense>
             {ingredients.map((ingredient, index) => (
@@ -65,7 +65,7 @@ function RecipeCard({ recipe }) {
 
         <Box sx={{ mt: 3 }}>
            <Typography variant="h6" gutterBottom>
-            Instruções
+            Instructions
           </Typography>
           <Typography variant="body1" style={{ whiteSpace: 'pre-wrap' }}>
             {recipe.strInstructions}

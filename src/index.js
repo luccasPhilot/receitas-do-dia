@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { RecipeProvider } from "./contexts/RecipeContext";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "./theme";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <RecipeProvider>
-    <CssBaseline />
-    <App />
-  </RecipeProvider>
+  <ThemeProvider theme={theme}>
+    <RecipeProvider>
+      <CssBaseline />
+      <App />
+    </RecipeProvider>
+  </ThemeProvider>
 );

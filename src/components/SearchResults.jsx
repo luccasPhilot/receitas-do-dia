@@ -8,13 +8,21 @@ function SearchResults({ recipes, onSelectRecipe }) {
 
   return (
     <Box sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom align="left">
+      <Typography variant="h5" gutterBottom align="left" sx={{ mb: 3 }}>
         Search Results
       </Typography>
       <Grid container spacing={3}>
         {recipes.map((recipe) => (
           <Grid item xs={12} sm={6} md={4} key={recipe.idMeal}>
-            <Card sx={{ height: '100%' }}>
+            <Card sx={{ 
+                height: '100%',
+                boxShadow: '0 4px 18px 0 rgba(0, 0, 0, 0.05)',
+                transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+                '&:hover': {
+                    transform: 'scale(1.03)',
+                    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1)',
+                }
+            }}>
               <CardActionArea
                 onClick={() => onSelectRecipe(recipe)}
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}

@@ -1,71 +1,78 @@
-# Getting Started with Create React App
+# 🍴 Recipe of the Day
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Um **SPA (Single Page Application)** desenvolvido em React para descobrir, buscar e visualizar receitas culinárias.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Sobre o Projeto
 
-### `npm start`
+Este é um projeto acadêmico desenvolvido para a disciplina de **Programação Web Fullstack**.  
+O principal objetivo foi construir uma aplicação web moderna do tipo SPA, utilizando **React.js** para consumir uma API JSON pública (**TheMealDB**), gerenciando estados complexos e aplicando conceitos avançados de hooks e bibliotecas externas.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+O resultado é uma **interface limpa, minimalista e responsiva**, focada na experiência do usuário para a descoberta de novas receitas.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Principais Funcionalidades
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Descoberta Aleatória**: Ao carregar o site ou clicar no botão _"Surprise Me"_, uma receita aleatória é apresentada.
+- **Busca por Nome**: O usuário pode buscar por receitas específicas. A busca retorna uma lista de resultados correspondentes.
+- **Visualização de Resultados**: Os resultados da busca são exibidos em uma grade de cards interativos.
+- **Detalhes da Receita**: Ao selecionar uma receita (seja da busca, aleatória ou do histórico), um card detalhado é exibido com imagem, ingredientes e instruções.
+- **Histórico de Visualização**: Todas as receitas visualizadas são salvas em um histórico, permitindo que o usuário as revisite com um único clique.
+- **Interface Responsiva**: O layout se adapta a diferentes tamanhos de tela, de desktops a dispositivos móveis.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Decisões de Arquitetura e Design
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Idioma da Aplicação (Inglês)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Durante o desenvolvimento, foi constatado que a API utilizada, **TheMealDB**, fornece todos os dados (nomes, ingredientes, instruções) exclusivamente em inglês.  
+Para garantir a consistência e a coesão da experiência do usuário, optou-se por desenvolver toda a interface gráfica também em **inglês**. Isso evita uma experiência mista, onde a interface estaria em português e os dados das receitas em outro idioma.
 
-### `npm run eject`
+### Gerenciamento de Estado com `useReducer`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Para atender a um dos requisitos da disciplina, o hook avançado **`useReducer`** foi escolhido para gerenciar os estados complexos da aplicação.  
+Toda a lógica relacionada ao ciclo de vida das requisições à API (carregamento, sucesso, erro), bem como a manipulação da lista de resultados e da receita selecionada, está centralizada na função `recipeReducer`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Essa abordagem torna o fluxo de dados mais previsível, organizado e fácil de depurar em comparação com o uso de múltiplos `useState`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Tecnologias Utilizadas
 
-## Learn More
+- **React.js**: Biblioteca principal para a construção da interface de usuário.
+- **Material-UI (MUI)**: Biblioteca de componentes React para um design moderno e responsivo.
+- **TheMealDB API**: API JSON pública utilizada como fonte de dados para as receitas.
+- **JavaScript (ES6+)**: Linguagem base para toda a lógica da aplicação.
+- **CSS**: Para estilizações globais e ajustes finos.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Como Rodar o Projeto Localmente
 
-### Code Splitting
+Para executar este projeto em sua máquina local, siga os passos abaixo.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+# Clone o repositório
+git clone https://github.com/luccasPhilot/receitas-do-dia
 
-### Analyzing the Bundle Size
+# Acesse a pasta do projeto
+cd receitas-do-dia
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Instale as dependências
+npm install
 
-### Making a Progressive Web App
+# Inicie o servidor de desenvolvimento
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+A aplicação será aberta automaticamente em http://localhost:3000
+no seu navegador.
 
-### Advanced Configuration
+## 🌐 Acesso ao Projeto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Você pode acessar a versão online do projeto através do seguinte link:
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# receitas-do-dia
+[link](link aqui)

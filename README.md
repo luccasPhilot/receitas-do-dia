@@ -75,4 +75,4 @@ no seu navegador.
 
 Você pode acessar a versão online do projeto através do seguinte link:
 
-[link](link aqui)
+[link GitHub Pages](https://luccasphilot.github.io/receitas-do-dia)

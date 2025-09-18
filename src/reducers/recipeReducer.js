@@ -1,6 +1,7 @@
 export const initialState = {
   loading: true,
-  recipe: null,
+  recipes: [],
+  selectedRecipe: null,
   error: null,
 };
 
@@ -16,14 +17,23 @@ export function recipeReducer(state, action) {
       return {
         ...state,
         loading: false,
-        recipe: action.payload,
+        recipes: action.payload,
+        selectedRecipe: null,
+        error: null,
       };
     case "FETCH_ERROR":
       return {
         ...state,
         loading: false,
-        recipe: null,
+        recipes: [],
+        selectedRecipe: null,
         error: action.payload,
+      };
+    case "SELECT_RECIPE":
+      return {
+        ...state,
+        selectedRecipe: action.payload,
+        loading: false,
       };
     default:
       throw new Error(`Ação desconhecida: ${action.type}`);

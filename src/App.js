@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import RecipeCard from "./components/RecipeCard";
+import SearchResults from "./components/SearchResults";
 import { recipeReducer, initialState } from "./reducers/recipeReducer";
 import { useRecipeHistory } from "./contexts/RecipeContext";
 import "./App.css";
@@ -36,7 +37,8 @@ function App() {
       const data = await response.json();
       if (data.meals) {
         const recipe = data.meals[0];
-        dispatch({ type: "FETCH_SUCCESS", payload: recipe });
+        dispatch({ type: "FETCH_SUCCESS", payload: [recipe] });
+        dispatch({ type: "SELECT_RECIPE", payload: recipe });
         addRecipeToHistory(recipe);
       } else {
         throw new Error("No recipe found.");
@@ -64,21 +66,18 @@ function App() {
       if (!response.ok) throw new Error("Network response failed.");
       const data = await response.json();
       if (data.meals) {
-        const recipe = data.meals[0];
-        dispatch({ type: "FETCH_SUCCESS", payload: recipe });
-        addRecipeToHistory(recipe);
+        dispatch({ type: "FETCH_SUCCESS", payload: data.meals });
+        setSearchTerm("");
       } else {
-        throw new Error(`No recipe found for "${searchTerm}".`);
+        throw new Error(`No recipes found for "${searchTerm}".`);
       }
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: error.message });
     }
   };
 
-  const showRecipeFromHistory = (recipe) => {
-    setValidationError("");
-    setSearchTerm("");
-    dispatch({ type: "FETCH_SUCCESS", payload: recipe });
+  const handleSelectRecipe = (recipe) => {
+    dispatch({ type: "SELECT_RECIPE", payload: recipe });
     addRecipeToHistory(recipe);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -132,9 +131,17 @@ function App() {
       <Box sx={{ my: 4 }}>
         {state.loading && <CircularProgress />}
         {state.error && <Alert severity="error">{state.error}</Alert>}
-        {state.recipe && !state.loading && !state.error && (
-          <RecipeCard recipe={state.recipe} />
-        )}
+
+        {!state.loading &&
+          !state.error &&
+          (state.selectedRecipe ? (
+            <RecipeCard recipe={state.selectedRecipe} />
+          ) : (
+            <SearchResults
+              recipes={state.recipes}
+              onSelectRecipe={handleSelectRecipe}
+            />
+          ))}
       </Box>
 
       {history.length > 0 && (
@@ -150,7 +157,7 @@ function App() {
                   <IconButton
                     edge="end"
                     aria-label="re-view"
-                    onClick={() => showRecipeFromHistory(recipe)}
+                    onClick={() => handleSelectRecipe(recipe)}
                   >
                     <ReplayIcon />
                   </IconButton>

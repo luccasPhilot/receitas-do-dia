@@ -7,10 +7,10 @@ export function RecipeProvider({ children }) {
 
   const addRecipeToHistory = useCallback((recipe) => {
     setHistory((prevHistory) => {
-      if (!prevHistory.some((item) => item.idMeal === recipe.idMeal)) {
-        return [recipe, ...prevHistory];
-      }
-      return prevHistory;
+      const filteredHistory = prevHistory.filter(
+        (item) => item.idMeal !== recipe.idMeal
+      );
+      return [recipe, ...filteredHistory];
     });
   }, []);
 

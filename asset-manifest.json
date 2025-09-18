@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/receitas-do-dia/static/css/main.91a2cd5e.css",
+    "main.js": "/receitas-do-dia/static/js/main.ee0150ba.js",
+    "index.html": "/receitas-do-dia/index.html",
+    "main.91a2cd5e.css.map": "/receitas-do-dia/static/css/main.91a2cd5e.css.map",
+    "main.ee0150ba.js.map": "/receitas-do-dia/static/js/main.ee0150ba.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.91a2cd5e.css",
+    "static/js/main.ee0150ba.js"
+  ]
+}

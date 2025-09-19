@@ -12,27 +12,49 @@ import {
   TextField,
   Stack,
   IconButton,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import RecipeCard from "./components/RecipeCard";
 import SearchResults from "./components/SearchResults";
+import IngredientSearch from "./components/IngredientSearch";
 import { recipeReducer, initialState } from "./reducers/recipeReducer";
 import { useRecipeHistory } from "./contexts/RecipeContext";
 import "./App.css";
 
 function App() {
+  const API_URL = "https://www.themealdb.com/api/json/v1/1/";
+
   const [state, dispatch] = useReducer(recipeReducer, initialState);
   const { history, addRecipeToHistory } = useRecipeHistory();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [validationError, setValidationError] = useState("");
+
+  const [allIngredients, setAllIngredients] = useState([]);
+  const [searchType, setSearchType] = useState(0);
+
+  useEffect(() => {
+    const fetchAllIngredients = async () => {
+      try {
+        const response = await fetch(`${API_URL}list.php?i=list`);
+        const data = await response.json();
+        if (data.meals) {
+          setAllIngredients(data.meals);
+        }
+      } catch (error) {
+        console.error("Failed to fetch ingredients list", error);
+      }
+    };
+    fetchAllIngredients();
+  }, []);
 
   const fetchRandomRecipe = useCallback(async () => {
     setValidationError("");
     dispatch({ type: "FETCH_START" });
     try {
-      const response = await fetch(
-        "https://www.themealdb.com/api/json/v1/1/random.php"
-      );
+      const response = await fetch(`${API_URL}random.php`);
       if (!response.ok) throw new Error("Network response failed.");
       const data = await response.json();
       if (data.meals) {
@@ -52,7 +74,7 @@ function App() {
     fetchRandomRecipe();
   }, [fetchRandomRecipe]);
 
-  const handleSearch = async () => {
+  const handleSearchByName = async () => {
     if (!searchTerm.trim()) {
       setValidationError("Please enter a recipe name to search.");
       return;
@@ -60,14 +82,11 @@ function App() {
     setValidationError("");
     dispatch({ type: "FETCH_START" });
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`
-      );
+      const response = await fetch(`${API_URL}search.php?s=${searchTerm}`);
       if (!response.ok) throw new Error("Network response failed.");
       const data = await response.json();
       if (data.meals) {
         dispatch({ type: "FETCH_SUCCESS", payload: data.meals });
-        setSearchTerm("");
       } else {
         throw new Error(`No recipes found for "${searchTerm}".`);
       }
@@ -76,10 +95,47 @@ function App() {
     }
   };
 
+  const handleSearchByIngredient = async (ingredient) => {
+    if (!ingredient) return;
+    const ingredientName = ingredient.strIngredient.replace(/ /g, "_");
+    dispatch({ type: "FETCH_START" });
+    try {
+      const response = await fetch(`${API_URL}filter.php?i=${ingredientName}`);
+      if (!response.ok) throw new Error("Network response failed.");
+      const data = await response.json();
+      if (data.meals) {
+        dispatch({ type: "FETCH_SUCCESS", payload: data.meals });
+      } else {
+        throw new Error(
+          `No recipes found with ingredient "${ingredient.strIngredient}".`
+        );
+      }
+    } catch (error) {
+      dispatch({ type: "FETCH_ERROR", payload: error.message });
+    }
+  };
+
   const handleSelectRecipe = (recipe) => {
-    dispatch({ type: "SELECT_RECIPE", payload: recipe });
-    addRecipeToHistory(recipe);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const fetchFullRecipeDetails = async (recipeId) => {
+      dispatch({ type: "FETCH_START" });
+      try {
+        const response = await fetch(`${API_URL}lookup.php?i=${recipeId}`);
+        const data = await response.json();
+        if (data.meals) {
+          const fullRecipe = data.meals[0];
+          dispatch({ type: "SELECT_RECIPE", payload: fullRecipe });
+          addRecipeToHistory(fullRecipe);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      } catch (error) {
+        dispatch({ type: "FETCH_ERROR", payload: error.message });
+      }
+    };
+    fetchFullRecipeDetails(recipe.idMeal);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setSearchType(newValue);
   };
 
   return (
@@ -91,33 +147,52 @@ function App() {
         Discover a random recipe or search for your favorite dish!
       </Typography>
 
-      <Stack
-        direction="row"
-        spacing={2}
-        justifyContent="center"
-        alignItems="flex-start"
-        sx={{ mb: 3 }}
-      >
-        <TextField
-          label="Search by name..."
-          variant="outlined"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          error={!!validationError}
-          helperText={validationError}
-          sx={{ flexGrow: 1, maxWidth: 400 }}
-        />
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleSearch}
-          disabled={state.loading}
-          sx={{ height: "56px" }}
+      <Box sx={{ width: "100%", mb: 3 }}>
+        <Tabs value={searchType} onChange={handleTabChange} centered>
+          <Tab label="Search by Name" />
+          <Tab label="Smart Search by Ingredient" />
+        </Tabs>
+      </Box>
+
+      {searchType === 0 && (
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="center"
+          alignItems="flex-start"
+          sx={{ mb: 3 }}
         >
-          Search
-        </Button>
-      </Stack>
+          <TextField
+            label="Search by name..."
+            variant="outlined"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearchByName()}
+            error={!!validationError}
+            helperText={validationError}
+            sx={{ flexGrow: 1, maxWidth: 400 }}
+          />
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleSearchByName}
+            disabled={state.loading}
+            sx={{ height: "56px" }}
+          >
+            Search
+          </Button>
+        </Stack>
+      )}
+
+      {searchType === 1 && (
+        <Box sx={{ mb: 3 }}>
+          <IngredientSearch
+            ingredients={allIngredients}
+            onIngredientSelect={handleSearchByIngredient}
+            disabled={state.loading}
+          />
+        </Box>
+      )}
 
       <Button
         variant="outlined"

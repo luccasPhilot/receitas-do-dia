@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/receitas-do-dia/static/css/main.91a2cd5e.css",
-    "main.js": "/receitas-do-dia/static/js/main.421c144c.js",
+    "main.js": "/receitas-do-dia/static/js/main.1b52c36a.js",
     "index.html": "/receitas-do-dia/index.html",
     "main.91a2cd5e.css.map": "/receitas-do-dia/static/css/main.91a2cd5e.css.map",
-    "main.421c144c.js.map": "/receitas-do-dia/static/js/main.421c144c.js.map"
+    "main.1b52c36a.js.map": "/receitas-do-dia/static/js/main.1b52c36a.js.map"
   },
   "entrypoints": [
     "static/css/main.91a2cd5e.css",
-    "static/js/main.421c144c.js"
+    "static/js/main.1b52c36a.js"
   ]
 }

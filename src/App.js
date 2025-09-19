@@ -87,6 +87,7 @@ function App() {
       const data = await response.json();
       if (data.meals) {
         dispatch({ type: "FETCH_SUCCESS", payload: data.meals });
+        setSearchTerm("");
       } else {
         throw new Error(`No recipes found for "${searchTerm}".`);
       }

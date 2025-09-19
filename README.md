@@ -17,6 +17,7 @@ O resultado é uma **interface limpa, minimalista e responsiva**, focada na expe
 
 - **Descoberta Aleatória**: Ao carregar o site ou clicar no botão _"Surprise Me"_, uma receita aleatória é apresentada.
 - **Busca por Nome**: O usuário pode buscar por receitas específicas. A busca retorna uma lista de resultados correspondentes.
+- **Busca por Ingredientes**: O usuário pode buscar por receitas que possuem o ingrediente específico selecionado. A busca retorna uma lista de resultados correspondentes.
 - **Visualização de Resultados**: Os resultados da busca são exibidos em uma grade de cards interativos.
 - **Detalhes da Receita**: Ao selecionar uma receita (seja da busca, aleatória ou do histórico), um card detalhado é exibido com imagem, ingredientes e instruções.
 - **Histórico de Visualização**: Todas as receitas visualizadas são salvas em um histórico, permitindo que o usuário as revisite com um único clique.

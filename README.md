@@ -7,7 +7,7 @@ Um **SPA (Single Page Application)** desenvolvido em React para descobrir, busca
 ## Sobre o Projeto
 
 Este é um projeto acadêmico desenvolvido para a disciplina de **Programação Web Fullstack**.  
-O principal objetivo foi construir uma aplicação web moderna do tipo SPA, utilizando **React.js** para consumir uma API JSON pública (**TheMealDB**), gerenciando estados complexos e aplicando conceitos avançados de hooks e bibliotecas externas.
+O principal objetivo foi construir uma aplicação web moderna do tipo SPA, utilizando **React.js** para consumir uma API JSON pública [**TheMealDB**](https://www.themealdb.com), gerenciando estados complexos e aplicando conceitos avançados de hooks e bibliotecas externas.
 
 O resultado é uma **interface limpa, minimalista e responsiva**, focada na experiência do usuário para a descoberta de novas receitas.
 
